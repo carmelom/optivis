@@ -1,66 +1,67 @@
 from __future__ import unicode_literals, division
+from __future__ import absolute_import
 
+from builtins import object
 import abc
 import weakref
 
-import labels
+from . import labels
+from future.utils import with_metaclass
 
-class AbstractBenchItem(object):
-  """
-  Abstract class for any bench item (e.g. component, link) to subclass. This does not include labels.
-  """
-  
-  __metaclass__ = abc.ABCMeta
-  
-  def __init__(self, labels=None, paramList=None, pykatObject=None, *args, **kwargs):    
-    self.labels = labels
-    self.paramList = paramList
-    self.pykatObject = pykatObject
-    
-  @abc.abstractmethod
-  def getLabelOrigin(self):
-    pass
-  
-  @abc.abstractmethod
-  def getLabelAzimuth(self):
-    pass
-  
-  @abc.abstractmethod
-  def getSize(self):
-    pass
-    
-  @property
-  def labels(self):
-    return self.__labels
+class AbstractBenchItem(with_metaclass(abc.ABCMeta, object)):
+    """
+    Abstract class for any bench item (e.g. component, link) to subclass. This does not include labels.
+    """
 
-  @labels.setter
-  def labels(self, theseLabels):
-    processedLabels = []
+    def __init__(self, labels=None, paramList=None, pykatObject=None, *args, **kwargs):
+        self.labels = labels
+        self.paramList = paramList
+        self.pykatObject = pykatObject
 
-    if theseLabels is not None:
-      for label in theseLabels:
-        if not isinstance(label, labels.Label):
-          raise Exception('Specified label is not of type Label')
+    @abc.abstractmethod
+    def getLabelOrigin(self):
+        pass
 
-        # tell label what its attached item is
-        label.item = self
+    @abc.abstractmethod
+    def getLabelAzimuth(self):
+        pass
 
-        processedLabels.append(label)
+    @abc.abstractmethod
+    def getSize(self):
+        pass
 
-    self.__labels = processedLabels
+    @property
+    def labels(self):
+        return self.__labels
 
-  @property
-  def pykatObject(self):
-    # references to external items should be made using weakref, so if they are deleted after the reference is made, the reference will be None
-    if self.__pykatObject is None:
-      raise Exception('External item is deleted')
+    @labels.setter
+    def labels(self, theseLabels):
+        processedLabels = []
 
-    # handle weak references
-    if isinstance(self.__pykatObject, weakref.ReferenceType):
-      return self.__pykatObject()
-    else:
-      return self.__pykatObject
+        if theseLabels is not None:
+            for label in theseLabels:
+                if not isinstance(label, labels.Label):
+                    raise Exception('Specified label is not of type Label')
 
-  @pykatObject.setter
-  def pykatObject(self, pykatObject):
-    self.__pykatObject = pykatObject
+                # tell label what its attached item is
+                label.item = self
+
+                processedLabels.append(label)
+
+        self.__labels = processedLabels
+
+    @property
+    def pykatObject(self):
+        # references to external items should be made using weakref, so if they are deleted after the reference is made, the reference will be None
+        if self.__pykatObject is None:
+            raise Exception('External item is deleted')
+
+        # handle weak references
+        if isinstance(self.__pykatObject, weakref.ReferenceType):
+            return self.__pykatObject()
+        else:
+            return self.__pykatObject
+
+    @pykatObject.setter
+    def pykatObject(self, pykatObject):
+        self.__pykatObject = pykatObject

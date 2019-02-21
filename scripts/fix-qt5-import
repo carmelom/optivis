@@ -1,0 +1,5 @@
+file='/home/carmelo/git/optivis/optivis/view/canvas.py'
+for name in $(cat qtwidgets-list.txt); do \
+    echo $name; \
+    sed -i "s/QtGui.$name/QtWidgets.$name/g" $file; \
+done

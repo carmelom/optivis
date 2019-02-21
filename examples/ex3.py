@@ -4,7 +4,7 @@ Demonstration of beam splitter's inputs and outputs.
 
 import sys
 
-sys.path.append('..')
+
 
 import optivis.scene as scene
 import optivis.bench.components as components

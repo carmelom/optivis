@@ -1,0 +1,2 @@
+cd ..
+for file in $(find . -type f -name '*.py'); do echo $file; /usr/lib/python3.7/Tools/scripts/reindent.py $file; done

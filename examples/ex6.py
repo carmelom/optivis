@@ -1,10 +1,11 @@
 """
 Demonstration of full GUI.
 """
+from __future__ import print_function
 
 import sys
 
-sys.path.append('..')
+
 
 import optivis.scene as scene
 import optivis.bench.components as components
@@ -27,7 +28,7 @@ scene.link(outputNode=mBottomLeft.getOutputNode('fr'), inputNode=bs.getInputNode
 
 scene.reference = l
 
-print bs.getAoiForConstrainedNodeAngle(bs.getInputNode('bkB'), bs.getInputNode('bkA'), 45)
+print(bs.getAoiForConstrainedNodeAngle(bs.getInputNode('bkB'), bs.getInputNode('bkA'), 45))
 
 gui = canvas.Full(scene=scene, startMarkers=True, endMarkers=True)
 gui.show()

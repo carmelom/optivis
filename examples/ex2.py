@@ -4,13 +4,14 @@ Demonstration of components with non-zero angles of incidence.
 
 import sys
 
-sys.path.append('..')
+
 
 import optivis.scene as scene
 import optivis.bench.links as links
 import optivis.bench.components as components
 import optivis.bench.labels as labels
 import optivis.view.canvas as canvas
+import optivis.view.svg as svg
 import optivis.geometry as geometry
 
 scene = scene.Scene(title="Example 2")
@@ -139,5 +140,7 @@ scene.link(
   ],
 )
 
-gui = canvas.Full(scene=scene)
-gui.show()
+view = svg.Svg(scene)
+view.export('scene.svg')
+# gui = canvas.Full(scene=scene)
+# gui.show()

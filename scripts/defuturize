@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+cd ..
+for fullfile in $(find . -type f -name '*.bak'); do newfile=${fullfile%.*}; echo $fullfile $newfile; mv $fullfile $newfile; done

@@ -4,12 +4,13 @@ Demonstration of laser and mirror.
 
 import sys
 
-sys.path.append('..')
 
 import optivis.scene as scene
-import optivis.bench.links as links
 import optivis.bench.components as components
-import optivis.view.canvas as canvas
+# import optivis.view.canvas as canvas
+import optivis.view.svg as svg
+
+
 
 scene = scene.Scene(title="Example 1")
 
@@ -20,5 +21,7 @@ scene.link(outputNode=l1.getOutputNode('out'), inputNode=m1.getInputNode('fr'), 
 
 scene.reference = l1
 
-gui = canvas.Simple(scene=scene)
-gui.show()
+view = svg.Svg(scene)
+view.export('scene.svg')
+# gui = canvas.Simple(scene=scene)
+# gui.show()

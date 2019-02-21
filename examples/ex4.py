@@ -4,7 +4,7 @@ Demonstration of funky angles of incidence.
 
 import sys
 
-sys.path.append('..')
+
 
 import optivis.scene as scene
 import optivis.bench.links as links

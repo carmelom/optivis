@@ -2,7 +2,7 @@ from __future__ import unicode_literals, division
 
 import sys
 
-sys.path.append('../..')
+
 
 import optivis.scene as scene
 import optivis.bench.components as components
