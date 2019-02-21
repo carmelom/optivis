@@ -140,7 +140,8 @@ scene.link(
   ],
 )
 
-view = svg.Svg(scene)
-view.export('scene.svg')
-# gui = canvas.Full(scene=scene)
-# gui.show()
+# view = svg.Svg(scene)
+# view.export('ex2.svg')
+gui = canvas.Full(scene=scene)
+# gui = canvas.Simple(scene=scene)
+gui.show()

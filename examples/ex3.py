@@ -9,6 +9,7 @@ import sys
 import optivis.scene as scene
 import optivis.bench.components as components
 import optivis.view.canvas as canvas
+import optivis.view.svg as svg
 
 scene = scene.Scene(title="Example 3")
 
@@ -26,5 +27,7 @@ scene.link(outputNode=mBottomLeft.getOutputNode('fr'), inputNode=bs.getInputNode
 
 scene.reference = l
 
-gui = canvas.Simple(scene=scene, startMarkers=True, endMarkers=True)
-gui.show()
+view = svg.Svg(scene)
+view.export('ex3.svg')
+# gui = canvas.Simple(scene=scene, startMarkers=True, endMarkers=True)
+# gui.show()

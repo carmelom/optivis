@@ -244,9 +244,9 @@ class AbstractCanvas(with_metaclass(abc.ABCMeta, optivis.view.AbstractView)):
 
         # get path to file to export to
         while True:
-            dialog = QtCore.Qt.QFileDialog(parent=self.qMainWindow, caption='Export SVG', directory=directory, filter=';;'.join(optivis.view.svg.Svg._Svg__filters))
-            dialog.setAcceptMode(QtCore.Qt.QFileDialog.AcceptSave)
-            dialog.setFileMode(QtCore.Qt.QFileDialog.AnyFile)
+            dialog = QtWidgets.QFileDialog(parent=self.qMainWindow, caption='Export SVG', directory=directory, filter=';;'.join(optivis.view.svg.Svg._Svg__filters))
+            dialog.setAcceptMode(QtWidgets.QFileDialog.AcceptSave)
+            dialog.setFileMode(QtWidgets.QFileDialog.AnyFile)
 
             # show dialog
             dialog.exec_()
@@ -797,7 +797,8 @@ class ControlPanel(QtWidgets.QWidget):
 
         # get selected item's data (which is the index of the selected layout in layoutManagerClasses)
         # The toInt() returns a tuple with the data in first position and a 'status' in the second. We don't need the second one.
-        layoutIndex, ok = layoutComboBox.itemData(layoutComboBox.currentIndex()).toInt()
+        # layoutIndex, ok = layoutComboBox.itemData(layoutComboBox.currentIndex()).toInt()
+        layoutIndex = layoutComboBox.itemData(layoutComboBox.currentIndex())
 
         # update canvas layout
         self.canvas.layoutManager = layoutManagerClasses[layoutIndex]
@@ -825,7 +826,8 @@ class ControlPanel(QtWidgets.QWidget):
 
         # get selected item's data (which is the index of the selected component in canvasComponents)
         # The toInt() returns a tuple with the data in first position and a 'status' in the second. We don't need the second one.
-        componentIndex, ok = referenceComboBox.itemData(referenceComboBox.currentIndex()).toInt()
+        # componentIndex, ok = referenceComboBox.itemData(referenceComboBox.currentIndex()).toInt()
+        componentIndex = referenceComboBox.itemData(referenceComboBox.currentIndex())
 
         # update scene reference
         if componentIndex == 0:

@@ -63,7 +63,8 @@ class AbstractView(with_metaclass(abc.ABCMeta, object)):
 
         # http://stackoverflow.com/questions/1796180/how-can-i-get-a-list-of-all-classes-within-current-module-in-python
         for name, obj in inspect.getmembers(optivis.layout):
-            if inspect.isclass(obj) and not inspect.isabstract(obj):
+            if inspect.isclass(obj) and not inspect.isabstract(obj) and not obj in (object, range):
+                print(name, obj)
                 managers.append(obj)
 
         return managers
