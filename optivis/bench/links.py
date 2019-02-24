@@ -10,6 +10,7 @@ import optivis.bench
 import optivis.geometry
 from . import nodes
 from . import labels
+from optivis import default_link_specs
 from future.utils import with_metaclass
 
 class AbstractLink(with_metaclass(abc.ABCMeta, optivis.bench.AbstractBenchItem)):
@@ -39,7 +40,7 @@ class AbstractLink(with_metaclass(abc.ABCMeta, optivis.bench.AbstractBenchItem))
         super(AbstractLink, self).__init__(*args, **kwargs)
 
     def __str__(self):
-        return "{0} --> {1}".format(self.outputNode, self.inputNode)
+        return "{0} --> {1} (len = {2:.1f})".format(self.outputNode, self.inputNode, self.length)
 
     def getLabelOrigin(self):
         return self.start + (self.end - self.start) / 2
@@ -167,7 +168,10 @@ class Link(AbstractLink):
         super(Link, self).__init__(*args, **kwargs)
 
 class LinkSpec(object):
-    def __init__(self, width=1.0, color="red", pattern=None, offset=0, startMarker=False, endMarker=False, startMarkerRadius=3, endMarkerRadius=2, startMarkerColor="red", endMarkerColor="blue", *args, **kwargs):
+    def __init__(self, width=None, color=None, pattern=None, offset=None,
+                 startMarker=None, endMarker=None, startMarkerRadius=None,
+                 endMarkerRadius=None, startMarkerColor=None, endMarkerColor=None,
+                 *args, **kwargs):
         self.width = width
         self.color = color
         self.pattern = pattern
@@ -179,6 +183,10 @@ class LinkSpec(object):
         self.startMarkerColor = startMarkerColor
         self.endMarkerColor = endMarkerColor
 
+        for k, v in default_link_specs.items():
+            if getattr(self, k) is None:
+                setattr(self, k, v)
+
         super(LinkSpec, self).__init__(*args, **kwargs)
 
     @property
@@ -188,11 +196,10 @@ class LinkSpec(object):
     @width.setter
     def width(self, width):
         # raises TypeError if input is invalid, or ValueError if a string input can't be interpreted
-        width = float(width)
-
-        if width < 0:
-            raise Exception('Width must be >= 0')
-
+        if width is not None:
+            width = float(width)
+            if width < 0:
+                raise Exception('Width must be >= 0')
         self.__width = width
 
     @property
@@ -201,7 +208,7 @@ class LinkSpec(object):
 
     @color.setter
     def color(self, color):
-        if not isinstance(color, basestring):
+        if color is not None and not isinstance(color, basestring):
             raise Exception('Specified color is not of type basestring')
 
         #FIXME: check for valid colors here
@@ -236,7 +243,8 @@ class LinkSpec(object):
 
     @offset.setter
     def offset(self, offset):
-        # raises TypeError if input is invalid, or ValueError if a string input can't be interpreted
-        offset = float(offset)
+    # raises TypeError if input is invalid, or ValueError if a string input can't be interpreted
+        if offset is not None:
+            offset = float(offset)
 
         self.__offset = offset

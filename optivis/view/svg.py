@@ -10,6 +10,7 @@ import sys
 import abc
 import cairosvg
 from xml.etree import ElementTree as et
+# from lxml import etree as et
 
 import optivis.geometry
 import optivis.bench.components
@@ -184,7 +185,9 @@ class SvgComponent(AbstractSvgItem):
         svgElement = svgFile.getroot()
 
         # make sure we've got an SVG element as root
-        if svgElement.tag != 'svg':
+        # print(svgElement.tag)
+        # if svgElement.tag != 'svg':
+        if 'svg' not in svgElement.tag:
             raise Exception('Root element of SVG file %s is not an \'svg\' tag'.format(path))
 
         # put contents of SVG element in new group to keep it unaltered

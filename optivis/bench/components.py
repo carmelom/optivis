@@ -32,6 +32,11 @@ class AbstractComponent(with_metaclass(abc.ABCMeta, optivis.bench.AbstractBenchI
         self.position = position
         self.tooltip = tooltip
 
+        for node in self.inputNodes:
+            setattr(self, f"input_{node.name}", node)
+        for node in self.outputNodes:
+            setattr(self, f"output_{node.name}", node)
+
         super(AbstractComponent, self).__init__(*args, **kwargs)
 
     def getLabelOrigin(self):
@@ -235,6 +240,26 @@ class SteeringMirror(Mirror):
 
         super(SteeringMirror, self).__init__(filename=filename, size=size, inputNodes=inputNodes, outputNodes=outputNodes, *args, **kwargs)
 
+class BlankComponent(Mirror):
+    def __init__(self, aoi=0, *args, **kwargs):
+        filename = "b-blank.svg"
+        size = optivis.geometry.Coordinates(180, 30)
+
+        inputNodes = [
+          nodes.InputNode(name="frA", component=self, position=optivis.geometry.Coordinates(0.5, 0), aoiMultiplier=-1, aoiOffset=180),
+          nodes.InputNode(name="frB", component=self, position=optivis.geometry.Coordinates(0.5, 0), aoiOffset=180),
+          nodes.InputNode(name="bkA", component=self, position=optivis.geometry.Coordinates(-0.5, 0)),
+          nodes.InputNode(name="bkB", component=self, position=optivis.geometry.Coordinates(-0.5, 0), aoiMultiplier=-1)
+        ]
+
+        outputNodes = [
+          nodes.OutputNode(name="frA", component=self, position=optivis.geometry.Coordinates(0.5, 0)),
+          nodes.OutputNode(name="frB", component=self, position=optivis.geometry.Coordinates(0.5, 0), aoiMultiplier=-1),
+          nodes.OutputNode(name="bkA", component=self, position=optivis.geometry.Coordinates(-0.5, 0), aoiMultiplier=-1, aoiOffset=180),
+          nodes.OutputNode(name="bkB", component=self, position=optivis.geometry.Coordinates(-0.5, 0), aoiOffset=180)
+        ]
+        super(BlankComponent, self).__init__(filename=filename, size=size, inputNodes=inputNodes, outputNodes=outputNodes, aoi=aoi, *args, **kwargs)
+
 class BeamSplitter(Mirror):
     def __init__(self, aoi=45, *args, **kwargs):
         filename = "b-bsp.svg"
@@ -253,7 +278,6 @@ class BeamSplitter(Mirror):
           nodes.OutputNode(name="bkA", component=self, position=optivis.geometry.Coordinates(-0.5, 0), aoiMultiplier=-1, aoiOffset=180),
           nodes.OutputNode(name="bkB", component=self, position=optivis.geometry.Coordinates(-0.5, 0), aoiOffset=180)
         ]
-
         super(BeamSplitter, self).__init__(filename=filename, size=size, inputNodes=inputNodes, outputNodes=outputNodes, aoi=aoi, *args, **kwargs)
 
 class BeamSplitterCube(Mirror):
@@ -421,3 +445,14 @@ class Dump(Sink):
         inputNode = nodes.InputNode(name="in", component=self, position=optivis.geometry.Coordinates(-0.5, 0))
 
         super(Dump, self).__init__(filename=filename, size=size, inputNode=inputNode, *args, **kwargs)
+
+class FiberCoupler(Sink):
+    # FIXME: make the input point left by default
+    def __init__(self, *args, **kwargs):
+        filename = "b-coupler0.svg"
+        # filename = "b-dump.svg"
+        size = optivis.geometry.Coordinates(64.842, 23.427)
+
+        inputNode = nodes.InputNode(name="in", component=self, position=optivis.geometry.Coordinates(-0.5, 0))
+
+        super(FiberCoupler, self).__init__(filename=filename, size=size, inputNode=inputNode, *args, **kwargs)

@@ -17,6 +17,7 @@ from qtpy import QtGui
 from qtpy import QtWidgets
 from qtpy import QtSvg
 
+import optivis
 import optivis.view
 import optivis.view.svg
 import optivis.layout
@@ -236,7 +237,9 @@ class AbstractCanvas(with_metaclass(abc.ABCMeta, optivis.view.AbstractView)):
 
     def export(self):
         # generate file path
-        directory = os.path.join(os.path.expanduser('~'), 'export.svg')
+        # directory = os.path.join(os.path.expanduser('~'), 'export.svg')
+        directory = os.path.join(os.path.abspath(optivis.__file__), 'export.svg')
+
 
         # default path and file format
         path = None

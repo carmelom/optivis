@@ -54,8 +54,15 @@ class Scene(object):
 
     def link(self, *args, **kwargs):
         link = links.Link(*args, **kwargs)
-
         self.addLink(link)
+
+    def link_short(self, comp_out, node_out, comp_in, node_in, length, *args, **kwargs):
+        link = links.Link(outputNode=comp_out.getOutputNode(node_out),
+                          inputNode=comp_in.getInputNode(node_in),
+                          length=length,
+                          *args, **kwargs)
+        self.addLink(link)
+
 
     def addLink(self, link):
         if not isinstance(link, links.AbstractLink):
